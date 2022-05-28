@@ -4,11 +4,13 @@ import ListChat from '../List/ListChat';
 import Header from '../Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { ADD_MESSAGE } from '../../redux/actions/actionsType';
+import { messagesSelector } from '../../redux/reducers/messagesReducer/selector';
 
 function Chats() {
 	const { id } = useParams();
 	const dispatch = useDispatch();
-	const messages = useSelector(state => state.messages.messages);
+	const messages = useSelector(messagesSelector);
 
 	const messagesChat = messages.filter(item => {
 		if (!id) return true;
@@ -16,7 +18,7 @@ function Chats() {
 	});
 
 	const createChat = newChat => {
-		dispatch({ type: 'addMessage', payload: newChat });
+		dispatch({ type: ADD_MESSAGE, payload: newChat });
 	};
 
 	return (
