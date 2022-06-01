@@ -1,11 +1,11 @@
 import React from 'react';
-import Form from '../Form/Form';
-import ListChat from '../List/ListChat';
-import Header from '../Header/Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
-import { ADD_MESSAGE } from '../../redux/actions/actionsType';
+import { useParams } from 'react-router';
 import { messagesSelector } from '../../redux/reducers/messagesReducer/selector';
+import Header from '../header/Header';
+import Form from '../Form/Form';
+import { ADD_MESSAGE } from '../../redux/actions/actionsTypes';
+import './chats.scss';
 
 function Chats() {
 	const { id } = useParams();
@@ -24,10 +24,19 @@ function Chats() {
 	return (
 		<>
 			<Header />
-			<div className='wrapper'>
-				<Form create={createChat} id={id} />
-				<ListChat messagesChat={messagesChat} />
-			</div>
+			<Form create={createChat} id={id} />
+			<ul className='chats__list'>
+				{messagesChat.map((item, idx) => (
+					<li
+						key={`${item.idMessages}_${idx}`}
+						id={item.idMessages}
+						className='chats__item'
+					>
+						<h3>{item.name}</h3>
+						<p>{item.title}</p>
+					</li>
+				))}
+			</ul>
 		</>
 	);
 }
