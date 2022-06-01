@@ -1,3 +1,5 @@
+import { ADD_MESSAGE, DELETE_MESSAGE } from '../../actions/actionsType';
+
 const initialState = {
 	messages: [
 		{
@@ -23,9 +25,9 @@ const initialState = {
 
 const messagesReducer = (state = initialState, action) => {
 	switch (action.type) {
-		case 'addMessage':
+		case ADD_MESSAGE:
 			return { ...state, messages: [...state.messages, action.payload] };
-		case 'deleteMessage':
+		case DELETE_MESSAGE:
 			return {
 				...state,
 				messages: state.messages.filter(

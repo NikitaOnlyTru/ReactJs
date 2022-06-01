@@ -1,12 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import { DELETE_MESSAGE } from '../../redux/actions/actionsType';
 import Mybtn from '../UI/Mybtn';
 import './list.scss';
 
 function ListChat({ messagesChat }) {
 	const dispatch = useDispatch();
 	const deleteMessage = id => {
-		dispatch({ type: 'deleteMessage', payload: id });
+		dispatch({ type: DELETE_MESSAGE, payload: id });
 	};
 	return (
 		<div className='list'>

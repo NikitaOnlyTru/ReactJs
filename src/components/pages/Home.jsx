@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { ADD_User, DELETE_USER } from '../../redux/actions/actionsType';
+import { usersSelector } from '../../redux/reducers/usersReducer.js/selector';
 import Header from '../Header/Header';
 import Mybtn from '../UI/Mybtn';
 import Myinput from '../UI/Myinput';
@@ -8,9 +10,9 @@ import './chats.scss';
 
 function Home() {
 	const dispatch = useDispatch();
-	const users = useSelector(state => state.users.users);
+	const users = useSelector(usersSelector);
 
-	const [value, setValue] = useState('');
+	const [value, setValue] = useState([{ chatName: '' }]);
 	const handleChange = e => {
 		setValue(e.target.value);
 	};
@@ -22,12 +24,16 @@ function Home() {
 			id: id,
 			name: value,
 		};
-
-		dispatch({ type: 'addUser', payload: obj });
+		setValue({ chatName: '' });
+		dispatch({
+			type: ADD_User,
+			payload: obj,
+		});
+		setValue({ chatName: '' });
 	};
 
 	const deleteHandler = id => {
-		dispatch({ type: 'deleteUser', payload: id });
+		dispatch({ type: DELETE_USER, payload: id });
 	};
 	return (
 		<>
@@ -43,7 +49,7 @@ function Home() {
 					{users.map((item, idx) => (
 						<li className='chats__item' key={idx}>
 							<NavLink to={`/chats/${item.id}`}>
-								<h3 key={idx}>{item.name}</h3>
+								<h3>{item.name}</h3>
 							</NavLink>
 							<Mybtn onClick={() => deleteHandler(item.id)} title={'x'} />
 						</li>
