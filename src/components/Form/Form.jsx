@@ -30,7 +30,9 @@ function Form({ create, id }) {
 					onChange={e => setValue({ ...value, title: e.target.value })}
 				/>
 			</div>
-			<Mybtn onClick={addTitle} title={'Отправить'} />
+			<Mybtn onClick={addTitle} title={'Отправить'}>
+				Отправить
+			</Mybtn>
 		</form>
 	);
 }

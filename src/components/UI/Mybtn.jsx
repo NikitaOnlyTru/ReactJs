@@ -4,7 +4,7 @@ import './btn.scss';
 function Mybtn(props) {
 	return (
 		<button {...props} className={'btn'}>
-			{props.title}
+			{props.children}
 		</button>
 	);
 }

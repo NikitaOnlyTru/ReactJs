@@ -1,42 +1,30 @@
-import { ADD_MESSAGE, DELETE_MESSAGE } from '../../actions/actionsType';
+import { ADD_MESSAGE, GET_MESSAGES } from '../../actions/actionsTypes';
 
 const initialState = {
 	messages: [
 		{
-			name: 'Alex',
-			idMessage: 22,
 			id: 1,
-			title: 'Hello world',
+			idMessages: 1,
+			name: 'Andrei',
+			title: 'Hello World!',
 		},
 		{
-			name: 'Alex',
-			idMessage: 23,
-			id: 1,
-			title: 'Work',
-		},
-		{
+			id: 2,
+			idMessages: 2,
 			name: 'Max',
-			idMessage: 24,
-			id: 3,
-			title: 'Home',
+			title: 'I learn English',
 		},
 	],
 };
 
-const messagesReducer = (state = initialState, action) => {
+export const messagesReducer = (state = initialState, action) => {
 	switch (action.type) {
+		case GET_MESSAGES:
+			return { ...state, messages: [state.messages, action.payload] };
 		case ADD_MESSAGE:
 			return { ...state, messages: [...state.messages, action.payload] };
-		case DELETE_MESSAGE:
-			return {
-				...state,
-				messages: state.messages.filter(
-					item => item.idMessage !== action.payload
-				),
-			};
+
 		default:
 			return state;
 	}
 };
-
-export default messagesReducer;

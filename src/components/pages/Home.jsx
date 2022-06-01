@@ -1,61 +1,60 @@
-import { useState } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { ADD_User, DELETE_USER } from '../../redux/actions/actionsType';
-import { usersSelector } from '../../redux/reducers/usersReducer.js/selector';
-import Header from '../Header/Header';
-import Mybtn from '../UI/Mybtn';
-import Myinput from '../UI/Myinput';
-import './chats.scss';
+import {
+	usersSelector,
+	usersLoadingSelector,
+	errorSelector,
+} from '../../redux/reducers/usersReducer/selector';
+import { loadUsers } from '../../redux/reducers/usersReducer/usersReducer';
+import Header from '../header/Header';
+import MyBtn from '../UI/Mybtn';
+import './home.scss';
 
 function Home() {
-	const dispatch = useDispatch();
+	const loading = useSelector(usersLoadingSelector);
 	const users = useSelector(usersSelector);
+	const error = useSelector(errorSelector);
+	const dispatch = useDispatch();
 
-	const [value, setValue] = useState([{ chatName: '' }]);
-	const handleChange = e => {
-		setValue(e.target.value);
+	useEffect(() => {
+		dispatch(loadUsers());
+	}, []);
+
+	const handleError = () => {
+		dispatch(loadUsers());
 	};
 
-	const addHandler = () => {
-		const id = Date.now();
+	if (loading) {
+		return (
+			<div>
+				<h3>Идёт загрузка</h3>
+			</div>
+		);
+	}
 
-		let obj = {
-			id: id,
-			name: value,
-		};
-		setValue({ chatName: '' });
-		dispatch({
-			type: ADD_User,
-			payload: obj,
-		});
-		setValue({ chatName: '' });
-	};
-
-	const deleteHandler = id => {
-		dispatch({ type: DELETE_USER, payload: id });
-	};
+	if (error) {
+		return (
+			<div>
+				Произошла ошибка
+				<MyBtn onClick={handleError}>обновить</MyBtn>
+			</div>
+		);
+	}
 	return (
 		<>
 			<Header />
-			<div className='wrapper'>
-				<Myinput
-					value={value.name}
-					onChange={handleChange}
-					style={{ margin: '0 0 15px 0' }}
-				/>
-				<Mybtn onClick={addHandler} title={'создать чат'} />
-				<ul className='chats'>
-					{users.map((item, idx) => (
-						<li className='chats__item' key={idx}>
-							<NavLink to={`/chats/${item.id}`}>
-								<h3>{item.name}</h3>
-							</NavLink>
-							<Mybtn onClick={() => deleteHandler(item.id)} title={'x'} />
-						</li>
-					))}
-				</ul>
-			</div>
+			<ul className='home__list'>
+				{users.map(item => (
+					<NavLink
+						to={`/chats/${item.id}`}
+						key={item.id}
+						className='home__link'
+					>
+						<li>{item.name}</li>
+					</NavLink>
+				))}
+			</ul>
 		</>
 	);
 }
