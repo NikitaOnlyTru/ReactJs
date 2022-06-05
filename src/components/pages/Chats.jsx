@@ -2,10 +2,10 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router';
 import { messagesSelector } from '../../redux/reducers/messagesReducer/selector';
-import Header from '../header/Header';
 import Form from '../Form/Form';
 import { ADD_MESSAGE } from '../../redux/actions/actionsTypes';
 import './chats.scss';
+import Header from '../Header/Header';
 
 function Chats() {
 	const { id } = useParams();

@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { NavLink } from 'react-router-dom';
+import { errorSelector } from '../../redux/reducers/usersChatReducer/selector';
 import {
-	usersSelector,
 	usersLoadingSelector,
-	errorSelector,
-} from '../../redux/reducers/usersReducer/selector';
-import { loadUsers } from '../../redux/reducers/usersReducer/usersReducer';
-import Header from '../header/Header';
-import MyBtn from '../UI/Mybtn';
+	usersSelector,
+} from '../../redux/reducers/usersChatReducer/selector';
+import { loadUsers } from '../../redux/reducers/usersChatReducer/usersChatReducer';
+import { NavLink } from 'react-router-dom';
+import Mybtn from '../UI/Mybtn';
+import Header from '../Header/Header';
 import './home.scss';
 
-function Home() {
+const Home = () => {
+	const dispatch = useDispatch();
 	const loading = useSelector(usersLoadingSelector);
 	const users = useSelector(usersSelector);
 	const error = useSelector(errorSelector);
-	const dispatch = useDispatch();
 
 	useEffect(() => {
 		dispatch(loadUsers());
@@ -37,26 +37,28 @@ function Home() {
 		return (
 			<div>
 				Произошла ошибка
-				<MyBtn onClick={handleError}>обновить</MyBtn>
+				<Mybtn onClick={handleError}>обновить</Mybtn>
 			</div>
 		);
 	}
 	return (
-		<>
+		<div>
 			<Header />
 			<ul className='home__list'>
 				{users.map(item => (
-					<NavLink
-						to={`/chats/${item.id}`}
-						key={item.id}
-						className='home__link'
-					>
-						<li>{item.name}</li>
-					</NavLink>
+					<li className='home__item' key={item.id}>
+						<NavLink
+							to={`/chats/${item.id}`}
+							key={item.id}
+							className='home__link'
+						>
+							{item.name}{' '}
+						</NavLink>
+					</li>
 				))}
 			</ul>
-		</>
+		</div>
 	);
-}
+};
 
 export default Home;

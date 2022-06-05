@@ -1,9 +1,25 @@
 import React, { useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { logoutInitiate } from '../../redux/actions/actions';
+import { userSelector } from '../../redux/reducers/userReducer/selectors';
+import Mybtn from '../UI/Mybtn';
 import './header.scss';
 
 function Header() {
+	const dispatch = useDispatch();
+	const user = useSelector(userSelector);
+	const navigate = useNavigate();
 	const [visible, setVisible] = useState(false);
+
+	const handleAuth = () => {
+		if (user) {
+			dispatch(logoutInitiate());
+		}
+		setTimeout(() => {
+			navigate('/');
+		}, 3000);
+	};
 	return (
 		<header className='header'>
 			<div className='header__logo'>
@@ -42,13 +58,12 @@ function Header() {
 					<ul>
 						<li>
 							{' '}
-							<NavLink to={'/'}>Главная</NavLink>
+							<NavLink to={'/home'}>Главная</NavLink>
 						</li>
 						<li>
-							<NavLink to={'/profile'}>Профиль</NavLink>
-						</li>
-						<li>
-							<NavLink to={'/chats'}>Чаты</NavLink>
+							<Mybtn onClick={handleAuth} style={{ width: '100%' }}>
+								Выйти
+							</Mybtn>
 						</li>
 					</ul>
 				</nav>
